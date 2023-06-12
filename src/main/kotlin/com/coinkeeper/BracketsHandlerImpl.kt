@@ -1,15 +1,15 @@
 package com.coinkeeper
 
 import java.lang.IllegalArgumentException
+import kotlin.jvm.Throws
 
 private val OPENING_BRACKETS = setOf('(', '{', '[')
 private val CLOSING_BRACKETS = setOf(')', '}', ']')
 
 
-class ParenthesisHandlerImpl(
+class BracketsHandlerImpl() : BracketsHandler {
 
-) : ParenthesisHandler {
-
+    @Throws(IllegalArgumentException::class)
     override fun validate(inputString: String) {
         val validString = mutableListOf<Char>()
 
@@ -18,38 +18,37 @@ class ParenthesisHandlerImpl(
                 validString.add(char)
             } else if (char in CLOSING_BRACKETS) {
                 if (validString.isEmpty() || !isMatchingBracket(validString.removeAt(validString.lastIndex), char)) {
-                    throw IllegalArgumentException("Невалидная строка. Найдена неверная скобка: $index: $char")
+                    throw IllegalArgumentException("Невалидная строка. Найдена неверная скобка: $index: $char в заданной строке '$inputString'")
                 }
             }
         }
         if (validString.isNotEmpty()) {
             val index = inputString.indexOf(validString.last())
-            throw IllegalArgumentException("Невалидная строка. Не хватает закрывающей скобки для открывающей скобки: $index")
+            throw IllegalArgumentException("Невалидная строка. Не хватает закрывающей скобки для открывающей скобки: $index в заданной строке '$inputString'")
         }
     }
 
     override fun getAllCoordinates(inputString: String): Map<String, List<Pair<Int, Int>>> {
-        val stack = mutableListOf<Pair<Char, Int>>()
-        val coordinates = mutableMapOf<String, MutableList<Pair<Int, Int>>>()
+        val bracketIndexList = mutableListOf<Pair<Char, Int>>()
+        val resultCoordinates = mutableMapOf<String, MutableList<Pair<Int, Int>>>()
 
-        for ((index, char) in inputString.withIndex()) {
+        inputString.withIndex().forEach { (index, char) ->
             if (char in OPENING_BRACKETS) {
-                stack.add(Pair(char, index))
+                bracketIndexList.add(Pair(char, index))
             } else if (char in CLOSING_BRACKETS) {
-                if (stack.isNotEmpty() && isMatchingBracket(stack.last().first, char)) {
-                    val openingBracket = stack.removeAt(stack.lastIndex)
+                if (bracketIndexList.isNotEmpty() && isMatchingBracket(bracketIndexList.last().first, char)) {
+                    val openingBracket = bracketIndexList.removeAt(bracketIndexList.lastIndex)
                     val openingIndex = openingBracket.second
-                    val closingIndex = index
                     val bracketPair = "${openingBracket.first}${char}"
-                    if (bracketPair !in coordinates) {
-                        coordinates[bracketPair] = mutableListOf()
+                    if (bracketPair !in resultCoordinates) {
+                        resultCoordinates[bracketPair] = mutableListOf()
                     }
-                    coordinates[bracketPair]?.add(Pair(openingIndex, closingIndex))
+                    resultCoordinates[bracketPair]?.add(Pair(openingIndex, index))
                 }
             }
         }
 
-        return coordinates
+        return resultCoordinates
     }
 
 

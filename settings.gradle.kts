@@ -1,1 +1,1 @@
-rootProject.name = "parenthesis-challenge"
+rootProject.name = "brackets-challenge"
