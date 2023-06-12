@@ -3,8 +3,9 @@ package com.coinkeeper
 import java.lang.IllegalArgumentException
 import kotlin.jvm.Throws
 
-private val OPENING_BRACKETS = setOf('(', '{', '[')
-private val CLOSING_BRACKETS = setOf(')', '}', ']')
+private val OPENING_AND_CLOSING_BRACKETS_MAP = mapOf('(' to ')', '{' to '}', '[' to ']')
+private val OPENING_BRACKETS = OPENING_AND_CLOSING_BRACKETS_MAP.keys
+private val CLOSING_BRACKETS = OPENING_AND_CLOSING_BRACKETS_MAP.values
 
 
 class BracketsHandlerImpl() : BracketsHandler {
@@ -14,11 +15,11 @@ class BracketsHandlerImpl() : BracketsHandler {
         val validString = mutableListOf<Char>()
 
         inputString.withIndex().forEach { (index, char) ->
-            if (char in OPENING_BRACKETS) {
+            if (char in OPENING_AND_CLOSING_BRACKETS_MAP.keys) {
                 validString.add(char)
             } else if (char in CLOSING_BRACKETS) {
                 if (validString.isEmpty() || !isMatchingBracket(validString.removeAt(validString.lastIndex), char)) {
-                    throw IllegalArgumentException("Невалидная строка. Найдена неверная скобка: $index: $char в заданной строке '$inputString'")
+                    throw IllegalArgumentException("Невалидная строка. Найдена неверная скобка: $index: '$char' в заданной строке '$inputString'")
                 }
             }
         }
@@ -52,12 +53,6 @@ class BracketsHandlerImpl() : BracketsHandler {
     }
 
 
-    private fun isMatchingBracket(opening: Char, closing: Char): Boolean {
-        return when (opening) {
-            '(' -> closing == ')'
-            '{' -> closing == '}'
-            '[' -> closing == ']'
-            else -> false
-        }
-    }
+    private fun isMatchingBracket(opening: Char, closing: Char): Boolean =
+        OPENING_AND_CLOSING_BRACKETS_MAP[opening] == closing
 }

@@ -7,6 +7,7 @@ fun main(args: Array<String>) {
     // но я не успел завезти какой-нибудь IOC контейнер
     val bracketsHandler: BracketsHandler = BracketsHandlerImpl()
 
+
     with(args[0]) {
         val inputString = this
 
