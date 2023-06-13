@@ -8,8 +8,8 @@ class OpenCloseCharsHandlerImpl(
     private val openingAndClosingCharsMap: Map<Char, Char>
 ) : OpenCloseCharsHandler {
 
-    private var openingCharsList = openingAndClosingCharsMap.keys
-    private var closingCharsList = openingAndClosingCharsMap.values
+    private val openingCharsList = openingAndClosingCharsMap.keys
+    private val closingCharsList = openingAndClosingCharsMap.values
 
     @Throws(IllegalArgumentException::class)
     override fun validate(inputString: String) {

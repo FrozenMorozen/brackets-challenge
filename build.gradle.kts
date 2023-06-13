@@ -26,4 +26,12 @@ allprojects {
             jvmTarget = "17"
         }
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    dependencies {
+        testImplementation("org.junit.jupiter:junit-jupiter:${Versions.TEST_JUNIT}")
+    }
 }
