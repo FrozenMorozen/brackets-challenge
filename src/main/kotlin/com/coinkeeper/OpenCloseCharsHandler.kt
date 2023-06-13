@@ -3,7 +3,7 @@ package com.coinkeeper
 import java.lang.IllegalArgumentException
 import kotlin.jvm.Throws
 
-interface BracketsHandler {
+interface OpenCloseCharsHandler {
 
     @Throws(IllegalArgumentException::class)
     fun validate(inputString: String)
