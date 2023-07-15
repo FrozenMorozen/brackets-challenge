@@ -1,4 +1,4 @@
-package com.coinkeeper
+package com.coinkeeper.bracketschallenge
 
 class Main
 
@@ -16,7 +16,8 @@ fun main(args: Array<String>) {
                 throw RuntimeException("Что-то пошло не так: ${ex.message}")
             }
             .onSuccess {
-                openCloseCharsHandler.getAllCoordinates(inputString)
+                openCloseCharsHandler.getAllCoordinatesList(inputString)
+                    .groupBy({ it.openingClosingChars }, { "(${it.firstIndex}, ${it.secondIndex})" })
                     .forEach { (key, value) -> println("Пара скобок = $key, их индексы по-парно: $value") }
             }
 

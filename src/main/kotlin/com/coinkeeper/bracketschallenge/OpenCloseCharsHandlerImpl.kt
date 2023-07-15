@@ -1,4 +1,4 @@
-package com.coinkeeper
+package com.coinkeeper.bracketschallenge
 
 import java.lang.IllegalArgumentException
 import kotlin.jvm.Throws
@@ -30,7 +30,8 @@ class OpenCloseCharsHandlerImpl(
         }
     }
 
-    override fun getAllCoordinates(inputString: String): Map<String, List<Pair<Int, Int>>> {
+    @Deprecated("Have to use getAllCoordinatesList")
+    override fun getAllCoordinatesMap(inputString: String): Map<String, List<Pair<Int, Int>>> {
         val openingCharsAndIndexList = mutableListOf<Pair<Char, Int>>()
         val resultCoordinates = mutableMapOf<String, MutableList<Pair<Int, Int>>>()
 
@@ -47,6 +48,31 @@ class OpenCloseCharsHandlerImpl(
                         resultCoordinates[openingAndClosingCharsAsString] = mutableListOf()
                     }
                     resultCoordinates[openingAndClosingCharsAsString]?.add(Pair(openingCharIndex, index))
+                }
+            }
+        }
+
+        return resultCoordinates
+    }
+
+    override fun getAllCoordinatesList(inputString: String): List<CharsCoordinates> {
+        val openingCharsAndIndexList = mutableListOf<Pair<Char, Int>>()
+        val resultCoordinates = mutableListOf<CharsCoordinates>()
+
+        inputString.withIndex().forEach { (index, char) ->
+            if (char in openingCharsList) {
+                openingCharsAndIndexList.add(Pair(char, index))
+            } else if (char in closingCharsList) {
+
+                if (openingCharsAndIndexList.isNotEmpty() && isMatchingChars(openingCharsAndIndexList.last().first, char)) {
+                    val openingChar: Pair<Char, Int> =
+                        openingCharsAndIndexList.removeAt(openingCharsAndIndexList.lastIndex)
+                    val openingCharIndex: Int = openingChar.second
+                    val openingAndClosingCharsAsString = "${openingChar.first}${char}"
+                    if (openingAndClosingCharsAsString !in resultCoordinates.map { it.openingClosingChars }) {
+                        resultCoordinates.remove(resultCoordinates.find { it.openingClosingChars == openingAndClosingCharsAsString })
+                    }
+                    resultCoordinates.add(CharsCoordinates(openingAndClosingCharsAsString, openingCharIndex, index))
                 }
             }
         }

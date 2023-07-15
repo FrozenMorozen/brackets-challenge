@@ -1,4 +1,4 @@
-package com.coinkeeper
+package com.coinkeeper.bracketschallenge
 
 import org.junit.jupiter.params.provider.Arguments
 

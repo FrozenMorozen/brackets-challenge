@@ -1,4 +1,4 @@
-package com.coinkeeper
+package com.coinkeeper.bracketschallenge
 
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -10,7 +10,7 @@ internal class OpenCloseCharsHandlerImplTest {
 
 
     @ParameterizedTest
-    @MethodSource("com.coinkeeper.TestDataGenerator#provideOpeningAndClosingCharsMapAndCorrectInputData")
+    @MethodSource("com.coinkeeper.bracketschallenge.TestDataGenerator#provideOpeningAndClosingCharsMapAndCorrectInputData")
     fun check_getAllCoordinates_withCorrectData(
         openingAndClosingCharsMap: Map<Char, Char>,
         inputData: String,
@@ -20,14 +20,14 @@ internal class OpenCloseCharsHandlerImplTest {
             openingAndClosingCharsMap = openingAndClosingCharsMap
         )
 
-        val actualResult = openCloseCharsHandler.getAllCoordinates(inputData)
+        val actualResult = openCloseCharsHandler.getAllCoordinatesMap(inputData)
         expectedResult.forEach { (key, value) ->
             assertTrue(expectedResult[key]!!.containsAll(actualResult[key]!!))
         }
     }
 
     @ParameterizedTest
-    @MethodSource("com.coinkeeper.TestDataGenerator#provideOpeningAndClosingCharsMapAndCorrectInputData")
+    @MethodSource("com.coinkeeper.bracketschallenge.TestDataGenerator#provideOpeningAndClosingCharsMapAndCorrectInputData")
     fun check_validate_withCorrectData(
         openingAndClosingCharsMap: Map<Char, Char>,
         inputData: String
@@ -40,7 +40,7 @@ internal class OpenCloseCharsHandlerImplTest {
     }
 
     @ParameterizedTest
-    @MethodSource("com.coinkeeper.TestDataGenerator#provideOpeningAndClosingCharsMapAndIncorrectInputData")
+    @MethodSource("com.coinkeeper.bracketschallenge.TestDataGenerator#provideOpeningAndClosingCharsMapAndIncorrectInputData")
     fun check_validate_withIncorrectData(
         openingAndClosingCharsMap: Map<Char, Char>,
         inputData: String
